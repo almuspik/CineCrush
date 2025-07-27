@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+<br> <br>
+
+<div class="container mt-4">
+
+  {% if user.is_authenticated %}
+    <h2>Welcome, {{ user.username }}</h2>
+  {% else %}
+    <h2>Welcome, Dude!!!!!</h2>
+  {% endif %}
+  <br> 
+
+  <h1 class="mb-4 mt-3">Search for a Movie</h1>
+
+  <form method="get" class="row g-3">
+    {% csrf_token %}
+    <div class="col-md-6">
+      <input type="text" class="form-control" name="movie_name" placeholder="Enter movie title" required>
+    </div> <br>
+    <div class="col-md-4">
+      <input type="text" class="form-control" name="year" placeholder="Enter release year (optional)">
+    </div> <br>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-secondary w-100">Search</button>
+    </div>
+  </form>
+
+  {% if movie %}
+    <div class="card mt-4">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="{{ movie.Poster }}" class="img-fluid rounded-start" alt="Movie Poster">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">{{ movie.Title }} ({{ movie.Year }})</h5>
+            <p class="card-text"><strong>Genre:</strong> {{ movie.Genre }}</p>
+            <p class="card-text"><strong>Director:</strong> {{ movie.Director }}</p>
+            <p class="card-text"><strong>Plot:</strong> {{ movie.Plot }}</p>
+
+            <form method="POST" action="{% url 'save_movie' %}">
+              {% csrf_token %}
+              <input type="hidden" name="title" value="{{ movie.Title }}">
+              <input type="hidden" name="year" value="{{ movie.Year }}">
+              <input type="hidden" name="genre" value="{{ movie.Genre }}">
+              <input type="hidden" name="director" value="{{ movie.Director }}">
+              <input type="hidden" name="plot" value="{{ movie.Plot }}">
+              <input type="hidden" name="poster" value="{{ movie.Poster }}">
+
+              <div class="mb-3 mt-3">
+                <label class="form-check-label me-3">
+                  <input type="checkbox" class="form-check-input" name="category" value="anime"> Anime
+                </label>
+                <label class="form-check-label me-3">
+                  <input type="checkbox" class="form-check-input" name="category" value="movie"> Movie
+                </label>
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" name="category" value="tvseries"> TV Series
+                </label>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Save Movie</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}

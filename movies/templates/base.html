@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CineCrush</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Important for responsiveness -->
+  
+  
+<style>
+
+  @media (max-width: 768px) {
+  #trendingCarousel img {
+    max-height: 250px;
+  }
+  .carousel-caption h5 {
+    font-size: 1rem;
+  }
+  .carousel-caption small {
+    font-size: 0.75rem;
+  }
+}
+
+        .footer {
+            color: white;
+            padding: 20px 0;
+        }
+        .footer a {
+            color: white;
+            margin: 0 15px;
+        }
+        .social-icons a {
+            margin: 0 10px;
+        }
+    </style>
+<!-- Add this in the <head> section of your HTML -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body style="background-color: #f4f4f4;">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="{% url 'index' %}">🎬 CineCrush</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarNav" aria-controls="navbarNav"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Search</a></li>
+
+          {% if user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'saved_movies_all' %}">All Collection</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'saved_movies' 'anime' %}">Anime</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'saved_movies' 'movie' %}">Movies</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'saved_movies' 'tvseries' %}">TV Series</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page content -->
+  <div class="container py-4">
+    {% block content %}
+    {% endblock %}
+  </div> <br> <br> <br> <br> <br> <br><br>
+ <br>
+
+  
+
+ <footer class="footer text-center bg-dark">
+        <div class="container">
+            <div class="social-icons mb-3">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fa-brands fa-github"></i></a>
+                <a href="#"><i class="fa-solid fa-envelope"></i></a>
+            </div>
+            <h5>CineCrush</h5>
+            <p>Copyright © 2025 Almuspik #CineCrush, Inc.</p>
+            <a href="#">Legal Stuff</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Security</a>
+            <a href="#">Website Accessibility</a>
+        </div>
+    </footer>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+  <!-- FontAwesome CDN -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,617 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="card shadow p-4" style="width: 100%; max-width: 400px;">
+    <h2 class="text-center mb-4">Login</h2>
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" name="username" id="username" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" name="password" id="password" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Login</button>
+    </form>
+    <p class="mt-3 text-center">Don't have an account? <a href="{% url 'register' %}">Create one</a></p>
+  </div>
+</div>
+
+{% endblock %}
+
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card shadow-sm" style="background-color: rgba(255, 255, 255, 0.8); border-radius: 15px;">
+        <div class="card-body p-4">
+          <h3 class="text-center mb-4">Login</h3>
+          <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input type="text" name="username" id="username" class="form-control" placeholder="Enter your username" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password" required>
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+
+            <p class="mt-3 text-center">
+              Don't have an account?
+              <a href="{% url 'register' %}">Create Account</a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+
+
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="card shadow p-4" style="width: 100%; max-width: 450px;">
+    <h2 class="text-center mb-4">Register</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-success w-100">Register</button>
+    </form>
+    <p class="mt-3 text-center">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+  </div>
+</div>
+
+{% endblock %}
+
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 15px;">
+        <div class="card-body p-4">
+          <h3 class="text-center mb-4">Register</h3>
+
+          <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+              <div class="mb-3">
+                <label class="form-label">{{ field.label_tag }}</label>
+                {{ field }}
+                {% if field.errors %}
+                  <div class="text-danger small">{{ field.errors }}</div>
+                {% endif %}
+              </div>
+            {% endfor %}
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-success">Register</button>
+            </div>
+
+            <p class="mt-3 text-center">
+              Already have an account?
+              <a href="{% url 'login' %}">Login</a>
+            </p>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+
+
+base
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Movieverse</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Important for responsiveness -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body style="background-color: #f4f4f4;">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="{% url 'index' %}">🎬 MovieVerse</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarNav" aria-controls="navbarNav"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Search</a></li>
+
+          {% if user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'saved_movies_all' %}">All Collection</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'saved_movies' 'anime' %}">Anime</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'saved_movies' 'movie' %}">Movies</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'saved_movies' 'tvseries' %}">TV Series</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page content -->
+  <div class="container py-4">
+    {% block content %}
+    {% endblock %}
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movieverse</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body style="background-color: #f4f4f4;">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'index' %}">MovieVerse</a>
+      <a class="navbar-brand" href="{% url 'index' %}">Search</a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarNav" aria-controls="navbarNav"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          {% if user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'saved_movies_all' %}">All Collection</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'saved_movies' 'anime' %}">Anime</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'saved_movies' 'movie' %}">Movies</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'saved_movies' 'tvseries' %}">TV Series</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  
+    <div class="container mt-4">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
+
+
+index old
+
+
+{% extends 'base.html' %}
+{% block content %}
+
+{% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<div class="container mt-4">
+
+    {% if user.is_authenticated %}
+        <h2>Welcome, {{ user.username }}</h2>
+    {% else %}
+        <h2>Welcome, Dude!!!!!</h2>
+    {% endif %}
+
+  <h1 class="mb-4 mt-3">Search for a Movie</h1>
+
+  <form method="get" class="row g-3">
+    {% csrf_token %}
+    <div class="col-md-6">
+      <input type="text" class="form-control" name="movie_name" placeholder="Enter movie title" required>
+    </div>
+    <div class="col-md-4">
+      <input type="text" class="form-control" name="year" placeholder="Enter release year (optional)">
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-secondary w-100">Search</button>
+    </div>
+  </form>
+
+  {% if movie %}
+    <div class="card mt-4">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="{{ movie.Poster }}" class="img-fluid rounded-start" alt="Movie Poster">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">{{ movie.Title }} ({{ movie.Year }})</h5>
+            <p class="card-text"><strong>Genre:</strong> {{ movie.Genre }}</p>
+            <p class="card-text"><strong>Director:</strong> {{ movie.Director }}</p>
+            <p class="card-text"><strong>Plot:</strong> {{ movie.Plot }}</p>
+
+            <form method="POST" action="{% url 'save_movie' %}">
+              {% csrf_token %}
+              <input type="hidden" name="title" value="{{ movie.Title }}">
+              <input type="hidden" name="year" value="{{ movie.Year }}">
+              <input type="hidden" name="genre" value="{{ movie.Genre }}">
+              <input type="hidden" name="director" value="{{ movie.Director }}">
+              <input type="hidden" name="plot" value="{{ movie.Plot }}">
+              <input type="hidden" name="poster" value="{{ movie.Poster }}">
+
+              <div class="mb-3 mt-3">
+                <label class="form-check-label me-3">
+                  <input type="checkbox" class="form-check-input" name="category" value="anime"> Anime
+                </label>
+                <label class="form-check-label me-3">
+                  <input type="checkbox" class="form-check-input" name="category" value="movie"> Movie
+                </label>
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" name="category" value="tvseries"> TV Series
+                </label>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Save Movie</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  {% endif %}
+</div>
+
+{% endblock %}
+
+
+
+index
+
+{% extends 'base.html' %}
+{% block content %}
+
+{% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<div class="container mt-4">
+
+  {% if user.is_authenticated %}
+    <h2>Welcome, {{ user.username }}</h2>
+  {% else %}
+    <h2>Welcome, Dude!!!!!</h2>
+  {% endif %}
+
+  <h1 class="mb-4 mt-3">Search for a Movie</h1>
+
+  <form method="get" class="row g-3">
+    {% csrf_token %}
+    <div class="col-md-6">
+      <input type="text" class="form-control" name="movie_name" placeholder="Enter movie title" required>
+    </div>
+    <div class="col-md-4">
+      <input type="text" class="form-control" name="year" placeholder="Enter release year (optional)">
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-secondary w-100">Search</button>
+    </div>
+  </form>
+
+  {% if movie %}
+    <div class="card mt-4">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="{{ movie.Poster }}" class="img-fluid rounded-start" alt="Movie Poster">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">{{ movie.Title }} ({{ movie.Year }})</h5>
+            <p class="card-text"><strong>Genre:</strong> {{ movie.Genre }}</p>
+            <p class="card-text"><strong>Director:</strong> {{ movie.Director }}</p>
+            <p class="card-text"><strong>Plot:</strong> {{ movie.Plot }}</p>
+
+            <form method="POST" action="{% url 'save_movie' %}">
+              {% csrf_token %}
+              <input type="hidden" name="title" value="{{ movie.Title }}">
+              <input type="hidden" name="year" value="{{ movie.Year }}">
+              <input type="hidden" name="genre" value="{{ movie.Genre }}">
+              <input type="hidden" name="director" value="{{ movie.Director }}">
+              <input type="hidden" name="plot" value="{{ movie.Plot }}">
+              <input type="hidden" name="poster" value="{{ movie.Poster }}">
+
+              <div class="mb-3 mt-3">
+                <label class="form-check-label me-3">
+                  <input type="checkbox" class="form-check-input" name="category" value="anime"> Anime
+                </label>
+                <label class="form-check-label me-3">
+                  <input type="checkbox" class="form-check-input" name="category" value="movie"> Movie
+                </label>
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" name="category" value="tvseries"> TV Series
+                </label>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Save Movie</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}
+
+
+
+old saved
+
+{% extends 'base.html' %}
+{% block content %}
+
+{% if user.is_authenticated %}
+
+  <h2 class="mb-4">{{ category|title }} Collection</h2>
+
+  {% if messages %}
+    <div class="container mt-3">
+      {% for message in messages %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="row">
+    {% for movie in movies %}
+      {% if forloop.first or forloop.counter0|divisibleby:3 %}
+        <div class="row">
+      {% endif %}
+
+      <div class="col-md-4 mb-3">
+        <div class="card h-100" style="height: 350px; width: 300px; overflow: hidden; cursor: pointer;"
+             data-bs-toggle="modal" data-bs-target="#movieModal{{ movie.id }}">
+          <img src="{{ movie.poster }}" class="card-img-top" alt="Poster" style="height: 200px; object-fit: cover;">
+          <div class="card-body p-2">
+            <h6 class="card-title mb-1" style="font-size: 0.9rem;">{{ movie.title }}</h6>
+            <p class="card-text text-muted mb-1" style="font-size: 0.75rem;">{{ movie.year }}</p>
+          </div>
+        </div>
+      </div>
+
+      {% if forloop.counter|divisibleby:3 or forloop.last %}
+        </div>
+      {% endif %}
+
+      <!-- Modal -->
+      <div class="modal fade" id="movieModal{{ movie.id }}" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">{{ movie.title }} ({{ movie.year }})</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <p><strong>Genre:</strong> {{ movie.genre }}</p>
+              <p><strong>Director:</strong> {{ movie.director }}</p>
+              <p><strong>Plot:</strong> {{ movie.plot }}</p>
+              <img src="{{ movie.poster }}" class="img-fluid" alt="Poster">
+            </div>
+            <div class="modal-footer">
+              <a href="{% url 'delete_movie' movie.id %}" class="btn btn-danger btn-sm">Delete</a>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+{% else %}
+  <h3> Heyy Brooo....You Need to Login To Access This Content.....</h3>
+{% endif %}
+
+{% endblock %}
+
+
+
+
+
+saved
+
+{% extends 'base.html' %}
+{% block content %}
+
+{% if user.is_authenticated %}
+
+  <h2 class="mb-4 text-center">{{ category|title }} Collection</h2>
+
+  {% if messages %}
+    <div class="container mt-3">
+      {% for message in messages %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="container">
+    <div class="row justify-content-center">
+      {% for movie in movies %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+          <div class="card h-100 shadow-sm" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#movieModal{{ movie.id }}">
+            <img src="{{ movie.poster }}" class="card-img-top" alt="Poster" style="height: 200px; object-fit: cover;">
+            <div class="card-body p-2">
+              <h6 class="card-title mb-1 text-truncate" title="{{ movie.title }}">{{ movie.title }}</h6>
+              <p class="card-text text-muted mb-1" style="font-size: 0.85rem;">{{ movie.year }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Movie Details Modal -->
+        <div class="modal fade" id="movieModal{{ movie.id }}" tabindex="-1" aria-labelledby="movieModalLabel{{ movie.id }}" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="movieModalLabel{{ movie.id }}">{{ movie.title }} ({{ movie.year }})</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p><strong>Genre:</strong> {{ movie.genre }}</p>
+                <p><strong>Director:</strong> {{ movie.director }}</p>
+                <p><strong>Plot:</strong> {{ movie.plot }}</p>
+                <img src="{{ movie.poster }}" class="img-fluid mt-2" alt="Poster">
+              </div>
+              <div class="modal-footer">
+                <a href="{% url 'delete_movie' movie.id %}" class="btn btn-danger btn-sm">Delete</a>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      {% endfor %}
+    </div>
+  </div>
+
+{% else %}
+  <div class="container text-center mt-5">
+    <h3>Heyy Brooo... You need to <a href="{% url 'login' %}">Login</a> to access this content!</h3>
+  </div>
+{% endif %}
+
+{% endblock %}
+
+
+<footer style="background-color: #1a1a1a; color: #ffffff; padding: 40px;">
+    <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+        <div style="flex: 1;">
+            <h4>OneCommerce</h4>
+            <p>Your eCommerce Solution Platform</p>
+            <div>
+                <a href="#" style="color: #ffffff; margin-right: 10px;">YouTube</a>
+                <a href="#" style="color: #ffffff; margin-right: 10px;">LinkedIn</a>
+                <a href="#" style="color: #ffffff; margin-right: 10px;">Facebook</a>
+                <a href="#" style="color: #ffffff;">Twitter</a>
+            </div>
+        </div>
+
+        <div style="flex: 1;">
+            <h4>Products</h4>
+            <ul style="list-style-type: none; padding: 0;">
+                <li><a href="#" style="color: #ffffff;">All Reviews</a></li>
+                <li><a href="#" style="color: #ffffff;">Transcy</a></li>
+                <li><a href="#" style="color: #ffffff;">Socialshop</a></li>
+                <li><a href="#" style="color: #ffffff;">SocialWidget</a></li>
+                <li><a href="#" style="color: #ffffff;">TrueProfit</a></li>
+                <li><a href="#" style="color: #ffffff;">All Products</a></li>
+            </ul>
+        </div>
+
+        <div style="flex: 1;">
+            <h4>Services</h4>
+            <ul style="list-style-type: none; padding: 0;">
+                <li><a href="#" style="color: #ffffff;">Website Audit</a></li>
+                <li><a href="#" style="color: #ffffff;">Website Translation</a></li>
+                <li><a href="#" style="color: #ffffff;">Page Speed Optimization</a></li>
+                <li><a href="#" style="color: #ffffff;">Product Feed Optimization</a></li>
+            </ul>
+        </div>
+
+        <div style="flex: 1;">
+            <h4>Company</h4>
+            <ul style="list-style-type: none; padding: 0;">
+                <li><a href="#" style="color: #ffffff;">About Us</a></li>
+                <li><a href="#" style="color: #ffffff;">Contact Us</a></li>
+                <li><a href="#" style="color: #ffffff;">Privacy Policy</a></li>
+                <li><a href="#" style="color: #ffffff;">Terms of Service</a></li>
+            </ul>
+        </div>
+
+        <div style="flex: 1;">
+            <h4>Resource</h4>
+            <ul style="list-style-type: none; padding: 0;">
+                <li><a href="#" style="color: #ffffff;">Blog</a></li>
+                <li><a href="#" style="color: #ffffff;">News</a></li>
+                <li><a href="#" style="color: #ffffff;">Knowledge Base</a></li>
+            </ul>
+        </div>
+
+        <div style="flex: 1;">
+            <h4>Partnership</h4>
+            <ul style="list-style-type: none; padding: 0;">
+                <li><a href="#" style="color: #ffffff;">Partner Program</a></li>
+                <li><a href="#" style="color: #ffffff;">Write For Us</a></li>
+            </ul>
+        </div>
+
+        <div style="flex: 1; text-align: center;">
+            <h4>Subscribe to our newsletter</h4>
+            <input type="email" placeholder="Enter your email" style="padding: 10px; width: 80%; margin-bottom: 10px;">
+            <button style="padding: 10px 20px; background-color: #28a745; color: #ffffff; border: none; cursor: pointer;">Subscribe</button>
+        </div>
+    </div>
+</footer>
